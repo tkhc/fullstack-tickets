@@ -1,0 +1,22 @@
+html,
+body {
+    height: 100%;
+}
+
+html {
+    line-height: 1.4;
+    font-family: Helvetica;
+}
+
+body {
+    margin: 0;
+    padding: 1rem;
+    background-color: #ffffff;
+}
+
+
+/* for datatable blinking on pageload issue */
+
+#ticket-table {
+    display: none;
+}

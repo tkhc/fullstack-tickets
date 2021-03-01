@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS -->
+    <!-- CSS only -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://unpkg.com/popper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+    <title>Ticket Tracker</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css" />
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+        $(document).ready(function() {
+
+            $("#ticket-table").DataTable({
+                // display datatable only after loading is complete       
+                // (to prevent table is flashing on pageload issue)
+                "initComplete": function() {
+                    $("#ticket-table").show();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col"><img src="https://i.ibb.co/mB3dySC/logo.png" alt="logo" width="150px"></div>
+            <div class="col text-right"> <a href="/logout">Logout</a></div>
+        </div>
+        <div class="row">
+            <div class="col text-right"> <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newModal" onclick="edt()">Create Ticket</a></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+
+                <table class="table-hover" id="ticket-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Desc</th>
+                            <th scope="col" data-width="150">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through tickets -->
+                        <% for(var i=0; i < tickets.length; i++) {%>
+                            <tr>
+                                <td>
+                                    <%= tickets[i].title %>
+                                </td>
+                                <td>
+                                    <%= tickets[i].desc %>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-tixTitle="<%= tickets[i].title %>" data-tixDesc="<%= tickets[i].desc %>" data-tixId="<%= tickets[i]._id %>" data-target="#basicModal" onclick="edt(this)">Edit</a>
+
+                                    <button type="button" class="btn btn-primary" onclick="del('<%= tickets[i]._id %>')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- UPDATE Modal -->
+        <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Update Ticket</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input type="text" name="title" id="titleUpdate" class="form-control" />
+                        <textarea type="text" name="desc" id="descUpdate" class="form-control mt-2" rows="5"></textarea>
+                        <input type="hidden" id="idUpdate" name="_id" value="">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" class="close">
+                            Close
+                        </button>
+                        <button type="button " class="btn btn-primary" onclick="upd()">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE Modal -->
+        <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Create Ticket</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input type="text" placeholder="Ticket Title" name="title" id="titleNew" class="form-control" />
+                        <textarea placeholder="Ticket Description" name="desc" id="descNew" class="form-control mt-2" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" class="close">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="post()">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/main.js "></script>
+</body>
+
+</html>
